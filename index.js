@@ -26,10 +26,18 @@ async function updateCID() {
     if(provider === null) return;
     
     let newURI = "ipfs://" + document.getElementById("newCID_IF").value + "/";
-
+    
     var contractWithSigner = new ethers.Contract(sm_address, sm_abi, signer);
     await contractWithSigner.changeBaseURI(newURI)
-        .then((res) => {
-            console.log(res);
+    .then((res) => {
+        console.log(res);
     });
+    
+    let noOfNewNFTs = parseInt(document.getElementById("noOfNewNFTs_IF").value);
+    if(noOfNewNFTs > 0) {
+        await contractWithSigner.mint(userWalletAddress, noOfNewNFTs)
+            .then((res) => {
+                console.log(res);
+        });
+    }
 }
